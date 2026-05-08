@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusTrace | KSIT Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area">
+                <div class="logo-icon"></div>
+                <h2>CampusTrace <span class="badge-gray">KSIT PORTAL</span></h2>
+            </div>
+            <div class="nav-links">
+                <button id="dashboardBtn" class="nav-item active" style="display:none;">Dashboard</button>
+                <button id="postNavBtn" class="nav-item" style="display:none;">Post Item</button>
+                <button id="profileBtn" class="nav-item" style="display:none;">My Profile</button>
+                <button id="logoutBtn" class="btn-text" style="display:none;">
+                    <div class="active-session">
+                        <small>ACTIVE SESSION</small>
+                        <span id="navUserName">User</span>
+                    </div>
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="landing" class="landing-split">
+            <div class="hero-content">
+                <span class="badge-blue"><i class="fas fa-shield-alt"></i> CAMPUS TRACE PROTOCOL</span>
+                <h1 class="hero-title">LOST.<br>FOUND.<br><span class="text-primary">RESOLVED.</span></h1>
+                <p class="hero-subtitle">The internal recovery network for KSIT. Report discoveries, track your missing items, and secure the campus ecosystem.</p>
+                <div class="hero-actions">
+                    <span class="action-tag"><i class="fas fa-search"></i> SMART SEARCH</span>
+                    <span class="action-tag"><i class="fas fa-box"></i> VAULT STORAGE</span>
+                </div>
+            </div>
+
+            <div class="auth-wrapper">
+                <div class="auth-card" id="loginForm">
+                    <h2>WELCOME BACK</h2>
+                    <p class="auth-subtitle">SECURE AUTHENTICATION REQUIRED</p>
+                    <form>
+                        <div class="input-group">
+                            <i class="far fa-envelope"></i>
+                            <input type="email" id="loginEmail" placeholder="Email Identity" required>
+                        </div>
+                        <div class="input-group">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="loginPassword" placeholder="Access Key" required>
+                        </div>
+                        <button type="submit" id="loginBtn" class="btn-primary w-100">SIGN IN <i class="fas fa-arrow-right"></i></button>
+                    </form>
+                    <p class="switch-auth">NO ACCOUNT? <a href="#" id="switchToRegister">Create One</a></p>
+                </div>
+
+                <div class="auth-card" id="registerForm" style="display:none;">
+                    <h2>INITIALIZE RECORD</h2>
+                    <p class="auth-subtitle">CREATE YOUR SECURE IDENTITY</p>
+                    <form>
+                        <div class="input-group"><input type="text" id="regName" placeholder="Full Name" required></div>
+                        <div class="input-group"><input type="email" id="regEmail" placeholder="Email Identity" required></div>
+                        <div class="input-group"><input type="password" id="regPassword" placeholder="Access Key" required></div>
+                        <div class="input-group"><input type="text" id="regDepartment" placeholder="Department (e.g. ECE)" required></div>
+                        <div class="input-group"><input type="tel" id="regContact" placeholder="Contact Number" required></div>
+                        <button type="submit" id="registerBtn" class="btn-primary w-100">REGISTER <i class="fas fa-arrow-right"></i></button>
+                    </form>
+                    <p class="switch-auth">HAVE CLEARANCE? <a href="#" id="switchToLogin">Sign In</a></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="dashboard" style="display:none;">
+            <div class="page-header">
+                <h1>Active Pulse.</h1>
+                <p>The official centralized portal for finding and returning items at KSIT.<br>Search the active logs or report a discovery.</p>
+                
+                <div class="search-container">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search for items (e.g., 'MacBook', 'keys', 'Cafeteria')...">
+                </div>
+            </div>
+
+            <div class="dashboard-layout">
+                <div class="sidebar">
+                    <small class="sidebar-title">TRANSMISSION FILTER</small>
+                    <div class="filter-card">
+                        <label>CLASSIFICATION</label>
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" id="typeAll">All</button>
+                            <button class="toggle-btn" id="typeFound">Found</button>
+                            <button class="toggle-btn" id="typeLost">Lost</button>
+                        </div>
+                    </div>
+                    <div class="filter-card">
+                        <label>CATEGORIES</label>
+                        <ul class="category-list">
+                            <li class="active">All Items <span>•</span></li>
+                            <li>Electronics</li>
+                            <li>Keys</li>
+                            <li>Wallets</li>
+                            <li>Documents</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="main-feed">
+                    <div class="feed-header">
+                        <div class="feed-title">
+                            <div class="logo-icon small"></div>
+                            <div>
+                                <h3>Recently Logged</h3>
+                                <small>SYSTEM STATUS: NOMINAL <span class="status-dot"></span></small>
+                            </div>
+                        </div>
+                        <span class="record-count"><span id="recordCount">0</span> RECORDS</span>
+                    </div>
+                    <div id="itemsList" class="items-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="postItemPage" style="display:none; padding-bottom: 60px;">
+            <div class="page-header" style="max-width: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h1>Report Registry.</h1>
+                        <p>Add a new record to the campus inventory system.</p>
+                    </div>
+                    <button id="backToPulseBtn" class="btn-text" style="font-size: 0.8rem; font-weight: 700; color: #6b7280; border: 1px solid #e5e7eb; padding: 8px 16px; border-radius: 20px;">
+                        <i class="fas fa-arrow-left"></i> BACK_TO_PULSE
+                    </button>
+                </div>
+            </div>
+
+            <div style="background: white; padding: 40px; border-radius: 24px; border: 1px solid #e5e7eb; max-width: 800px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+                <form id="postItemForm">
+                    <div style="margin-bottom: 30px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 10px;">ENTRY CLASSIFICATION</label>
+                        <div style="display: flex; background: #f9fafb; padding: 5px; border-radius: 12px; border: 1px solid #e5e7eb;">
+                            <button type="button" id="selectFound" class="toggle-btn active" style="flex: 1; padding: 12px; border-radius: 8px;">FOUND_ITEM</button>
+                            <button type="button" id="selectLost" class="toggle-btn" style="flex: 1; padding: 12px; border-radius: 8px;">LOST_ITEM</button>
+                            <input type="hidden" id="itemType" value="found">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 10px;">ITEM IDENTIFIER</label>
+                        <input type="text" id="itemTitle" placeholder="Descriptive Title (e.g. 'Blue Adidas Water Bottle')" required style="width: 100%; padding: 15px 20px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; background: #f9fafb;">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                        <div>
+                            <label style="font-size: 0.75rem; font-weight: 700; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 10px;">CATEGORY</label>
+                            <div class="input-group" style="margin-bottom: 0;">
+                                <i class="fas fa-tag" style="right: 15px; left: auto;"></i>
+                                <select id="itemCategory" required style="width: 100%; padding: 15px 20px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; background: #f9fafb; appearance: none;">
+                                    <option value="Others">Others</option>
+                                    <option value="Electronics">Electronics</option>
+                                    <option value="Keys">Keys</option>
+                                    <option value="Wallets">Wallets</option>
+                                    <option value="Documents">Documents</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-size: 0.75rem; font-weight: 700; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 10px;">DATE FOUND/LOST</label>
+                            <input type="date" id="itemDate" required style="width: 100%; padding: 15px 20px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; background: #f9fafb; color: #6b7280;">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 10px;">PRECISE LOCATION</label>
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input type="text" id="itemLocation" placeholder="e.g. '2nd Floor Canteen, Table near entrance'" required style="padding-left: 45px;">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 10px;">DETAILED CONTEXT</label>
+                        <textarea id="itemDescription" placeholder="Any unique markings or condition details..." required style="width: 100%; padding: 15px 20px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; background: #f9fafb; min-height: 120px; resize: vertical;"></textarea>
+                    </div>
+
+                    <div style="margin-bottom: 40px;">
+                        <label style="font-size: 0.75rem; font-weight: 700; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 10px;">VISUAL EVIDENCE</label>
+                        <div style="border: 2px dashed #d1d5db; border-radius: 12px; padding: 40px; text-align: center; cursor: pointer; background: #f9fafb; transition: border-color 0.2s;" onclick="document.getElementById('itemImage').click()">
+                            <div style="width: 48px; height: 48px; background: white; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+                                <i class="fas fa-camera" style="color: #9ca3af; font-size: 1.2rem;"></i>
+                            </div>
+                            <h4 style="font-size: 0.9rem; font-weight: 700; margin-bottom: 5px;">Click to reference an image</h4>
+                            <small style="color: #9ca3af; font-size: 0.7rem;">Max size: 1MB</small>
+                            <input type="file" id="itemImage" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <button type="submit" id="submitPostBtn" class="btn-primary w-100" style="background: var(--primary); font-size: 1.1rem; padding: 20px;">Initialize Registry Entry <i class="fas fa-save"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div id="profilePage" style="display:none; padding-bottom: 60px;">
+            <div class="profile-header" style="display: flex; align-items: center; gap: 30px; margin-top: 40px; margin-bottom: 50px;">
+                <div style="width: 120px; height: 120px; border-radius: 50%; border: 4px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 4rem; font-weight: 800; color: var(--primary); background: white; position: relative; box-shadow: 0 0 0 10px rgba(79, 70, 229, 0.1);">
+                    <span id="profileInitial">U</span>
+                    <div style="position: absolute; bottom: 0; right: 0; background: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <i class="far fa-user" style="color: var(--primary); font-size: 0.9rem;"></i>
+                    </div>
+                </div>
+                <div>
+                    <h1 id="profileName" style="font-size: 2.5rem; font-weight: 800; margin-bottom: 5px;">User Name</h1>
+                    <p id="profileEmail" style="color: #9ca3af; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 15px;">user@ksit.edu</p>
+                    <div style="display: flex; gap: 10px;">
+                        <span style="background: #eff6ff; color: #3b82f6; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; border: 1px solid #bfdbfe;">VERIFIED STUDENT</span>
+                        <span style="background: #f3f4f6; color: #6b7280; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; border: 1px solid #e5e7eb;"><span id="profileReportCount">0</span> TOTAL REPORTS</span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 300px 1fr; gap: 40px;">
+                <div>
+                    <div style="background: white; padding: 30px; border-radius: 24px; border: 1px solid #e5e7eb; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+                        <h3 style="font-size: 0.8rem; color: #9ca3af; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;"><i class="fas fa-shield-alt"></i> SECURITY CORE</h3>
+                        
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 16px; margin-bottom: 15px; border: 1px solid #f3f4f6;">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); color: var(--primary);">
+                                    <i class="far fa-clock"></i>
+                                </div>
+                                <div>
+                                    <small style="font-size: 0.65rem; color: #9ca3af; font-weight: 700; letter-spacing: 0.05em; display: block;">TRUST SCORE</small>
+                                    <strong style="font-size: 1.1rem; font-weight: 800;">98 / 100</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background: #f9fafb; padding: 20px; border-radius: 16px; margin-bottom: 25px; border: 1px solid #f3f4f6;">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div style="width: 40px; height: 40px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05); color: #f59e0b;">
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <div>
+                                    <small style="font-size: 0.65rem; color: #9ca3af; font-weight: 700; letter-spacing: 0.05em; display: block;">ACHIEVEMENTS</small>
+                                    <strong style="font-size: 1.1rem; font-weight: 800;">Gold Finder</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="openEditProfileBtn" class="btn-primary w-100" style="background: var(--primary); padding: 15px; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase;">EDIT_PROFILE</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div style="display: flex; align-items: baseline; gap: 15px; margin-bottom: 20px;">
+                        <h2 style="font-size: 1.8rem; font-weight: 800;">Your Historical Logs</h2>
+                        <span style="background: #eef2ff; color: var(--primary); padding: 4px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em;">SYNCHRONIZED</span>
+                    </div>
+                    <div id="personalItemsList" class="items-grid" style="grid-template-columns: 1fr;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="editProfilePage" style="display:none; padding-bottom: 60px; max-width: 500px; margin: 0 auto; margin-top: 60px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px;">
+                <div>
+                    <h1 style="font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 5px;">Identity Core.</h1>
+                    <p style="color: #6b7280; font-size: 0.9rem;">Synchronize your personal registry credentials.</p>
+                </div>
+                <button id="editBackBtn" style="width: 40px; height: 40px; border-radius: 12px; border: 1px solid #e5e7eb; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #6b7280; box-shadow: 0 2px 4px rgba(0,0,0,0.02);"><i class="fas fa-arrow-left"></i></button>
+            </div>
+
+            <div style="background: white; padding: 40px; border-radius: 24px; border: 1px solid #e5e7eb; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+                <form id="editProfileForm">
+                    <div style="margin-bottom: 25px;">
+                        <label style="font-size: 0.7rem; font-weight: 800; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 8px; text-transform: uppercase;">FULL NEXUS IDENTITY</label>
+                        <div class="input-group" style="margin-bottom: 0;">
+                            <i class="far fa-user"></i>
+                            <input type="text" id="editName" required style="width: 100%; padding: 15px 15px 15px 45px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; background: #f9fafb;">
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 40px;">
+                        <label style="font-size: 0.7rem; font-weight: 800; color: #9ca3af; letter-spacing: 0.05em; display: block; margin-bottom: 8px; text-transform: uppercase;">REGISTRY EMAIL (LOCKED)</label>
+                        <input type="email" id="editEmail" disabled style="width: 100%; padding: 15px 20px; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; background: #f3f4f6; color: #9ca3af; cursor: not-allowed;">
+                    </div>
+
+                    <div style="display: flex; gap: 15px;">
+                        <button type="button" id="cancelEditBtn" style="flex: 1; padding: 16px; border-radius: 12px; background: white; border: 1px solid #e5e7eb; color: #6b7280; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: background 0.2s;">CANCEL</button>
+                        <button type="submit" id="saveProfileBtn" style="flex: 2; padding: 16px; border-radius: 12px; background: var(--primary); border: none; color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: background 0.2s;">SAVE CHANGES <i class="far fa-save"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="itemDetailPage" style="display:none; padding-bottom: 60px; margin-top: 20px;">
+             <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 40px;">
+                 <button id="detailBackBtn" style="width: 48px; height: 48px; border-radius: 12px; border: 1px solid #e5e7eb; background: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #6b7280; box-shadow: 0 2px 4px rgba(0,0,0,0.02); transition: all 0.2s;"><i class="fas fa-arrow-left"></i></button>
+                 <div>
+                     <div style="display: flex; align-items: center; gap: 15px;">
+                         <h1 id="detailTitle" style="font-size: 2.5rem; font-weight: 800; margin: 0; line-height: 1;">Item Title</h1>
+                         <span id="detailBadge" style="font-size: 0.7rem; font-weight: 800; padding: 4px 12px; border-radius: 20px; letter-spacing: 0.05em; background: #fee2e2; color: #ef4444;">LOST</span>
+                     </div>
+                     <small style="color: #9ca3af; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">RECORD ID: <span id="detailId">...</span></small>
+                 </div>
+             </div>
+
+             <div class="dashboard-layout" style="grid-template-columns: 1fr 350px;">
+                 <div>
+                     <div id="detailImagePlaceholder" style="width: 100%; height: 350px; background: #f9fafb; border-radius: 24px; border: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: center; margin-bottom: 30px; overflow: hidden;">
+                         <i class="fas fa-box-open" id="detailPlaceholderIcon" style="font-size: 4rem; color: #d1d5db;"></i>
+                         <img id="detailImage" src="" style="display: none; width: 100%; height: 100%; object-fit: cover;" alt="Item Image">
+                     </div>
+                     
+                     <div style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 20px; padding: 25px; display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 20px; margin-bottom: 40px;">
+                         <div>
+                             <small style="color: #9ca3af; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 5px;">REPORTER</small>
+                             <div style="font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;"><i class="far fa-user" style="color: var(--primary);"></i> <span id="detailReporter">...</span></div>
+                         </div>
+                         <div>
+                             <small style="color: #9ca3af; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 5px;">LOGGED</small>
+                             <div style="font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;"><i class="far fa-clock" style="color: var(--primary);"></i> <span id="detailDate">...</span></div>
+                         </div>
+                         <div>
+                             <small style="color: #9ca3af; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 5px;">LOCATION</small>
+                             <div style="font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-map-marker-alt" style="color: var(--primary);"></i> <span id="detailLocation">...</span></div>
+                         </div>
+                         <div>
+                             <small style="color: #9ca3af; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em; display: block; margin-bottom: 5px;">CATEGORY</small>
+                             <div style="font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;"><i class="fas fa-check-circle" style="color: var(--primary);"></i> <span id="detailCategory">...</span></div>
+                         </div>
+                     </div>
+
+                     <h3 style="font-size: 0.8rem; color: #9ca3af; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 15px;">DETAILED RECORD CONTEXT</h3>
+                     <p id="detailDescription" style="font-size: 1.1rem; line-height: 1.6; color: #374151;"></p>
+                 </div>
+
+                 <div>
+                     <h3 style="font-size: 0.8rem; color: #9ca3af; letter-spacing: 0.1em; font-weight: 700; margin-bottom: 20px;">TRANSMISSION HUB</h3>
+                     <div style="background: white; border-radius: 24px; border: 1px solid #e5e7eb; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.02);">
+                         <div id="hubCard" style="background: #e0e7ff; border-radius: 16px; padding: 25px; border: 1px solid #c7d2fe;">
+                             <h4 id="hubTitle" style="font-size: 0.7rem; color: var(--primary); letter-spacing: 0.05em; font-weight: 800; margin-bottom: 15px;">REPORTER AUTHORITY HUB</h4>
+                             <p id="hubText" style="color: var(--primary); font-size: 0.9rem; font-weight: 600; line-height: 1.5; margin-bottom: 25px;">If you have safely recovered your missing item, finalize this entry to close the search log.</p>
+                             <button id="hubActionBtn" class="btn-primary w-100" style="background: var(--primary); display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; font-size: 0.9rem; transition: background 0.2s;">
+                                 <span id="hubBtnText">MARK AS RECOVERED</span> <i class="far fa-check-circle"></i>
+                             </button>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
