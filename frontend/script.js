@@ -1,6 +1,6 @@
 class CampusTraceApp {
     constructor() {
-        this.apiUrl = 'http://localhost:5000/api';
+        this.apiUrl = 'https://campus-lost-found-r7c2.onrender.com/api';
         this.token = localStorage.getItem('token');
         
         const savedUser = localStorage.getItem('user');
